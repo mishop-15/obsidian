@@ -1,0 +1,8 @@
+circuit_type = "3"
+collateral_amount = "1000000"
+borrowed_amount = "700000"
+market_price = "1"
+liquidation_threshold = "50"
+min_required = "500000"
+max_allowed = "10000000"
+max_ltv_percent = "70"
