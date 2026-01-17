@@ -5,14 +5,14 @@ package_manager = "yarn"
 resolution = true
 skip-lint = false
 
-[programs.localnet]
-obsidian_protocol = "DbnYJsu3FcxzWpmiHdYkPCYy7PJqERybuakZDnRf2ymm"
+[programs.devnet]
+obsidian_protocol = "GbEuxhGpP1iy7YouyvfrDPEKk6pHZhZ8oT5oxLMvbGQ3"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "https://devnet.helius-rpc.com/?api-key=ad0ff867-8155-4f12-b06a-e2b9cdb77447"
 wallet = "~/.config/solana/id.json"
 
 [scripts]

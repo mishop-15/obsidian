@@ -1,8 +1,21 @@
-circuit_type = "3"
-collateral_amount = "1000000"
-borrowed_amount = "700000"
-market_price = "1"
-liquidation_threshold = "50"
-min_required = "500000"
-max_allowed = "10000000"
-max_ltv_percent = "70"
+# Select Circuit 2 (Dark Pool Order)
+circuit_type = "2"
+
+# --- Dark Pool Inputs (VALID CASE) ---
+order_amount = "50"        # User wants to trade 50
+user_balance = "100"       # User has 100 (Solvent)
+order_price = "150"        # Limit price
+min_order_size = "10"      # Protocol min
+max_order_size = "1000"    # Protocol max
+min_price = "10"           # Market min
+max_price = "200"          # Market max
+
+# --- Dummy Values (Required) ---
+user_id_hash = "0"
+kyc_registry_root = "0"
+merkle_path = ["0", "0", "0", "0", "0", "0", "0", "0"]
+merkle_indices = ["0", "0", "0", "0", "0", "0", "0", "0"]
+bid_amount = "0"
+bidder_balance = "0"
+minimum_bid = "0"
+collateral_value = "0"
