@@ -1,93 +1,93 @@
 use dep::std;
 
-// --- CIRCUIT 1: COMPLIANCE (KYC) ---
-// Proves: "I am in the registry of allowed users"
-// Privacy: Does not reveal WHICH user you are (Zero Knowledge)
-fn compliance_proof(
-    user_id_hash: Field,           // Private: Your specific ID hash
-    kyc_registry_root: Field,      // Public: The Merkle Root of all allowed users
-    merkle_path: [Field; 8],       // Private: Path to the root
-    merkle_indices: [Field; 8]     // Private: Left/Right directions (0 or 1)
+global COMPLIANCE_CIRCUIT: Field = 1;
+global DARK_POOL_CIRCUIT: Field = 2;
+global AUCTION_CIRCUIT: Field = 3;
+global MERKLE_DEPTH: u64 = 8;
+
+fn validate_range(value: Field, min: Field, max: Field) {
+    assert(value as u64 >= min as u64, "Value below minimum threshold");
+    assert(value as u64 <= max as u64, "Value exceeds maximum threshold");
+}
+
+fn validate_solvency(balance: Field, required: Field) {
+    assert(
+        balance as u64 >= required as u64,
+        "Insufficient balance for operation"
+    );
+}
+
+fn hash_pair(left: Field, right: Field) -> Field {
+    std::hash::pedersen_hash([left, right])
+}
+fn prove_compliance(
+    user_id_hash: Field,
+    kyc_registry_root: Field,
+    merkle_path: [Field; 8],
+    merkle_indices: [Field; 8]
 ) {
-    let mut current = user_id_hash;
+    let mut current_hash = user_id_hash;
     
-    // Reconstruct the root from the leaf up
     for i in 0..8 {
-        let path_bit = merkle_indices[i];
+        let is_right_node = merkle_indices[i];
         let sibling = merkle_path[i];
         
-        let mut left = current;
-        let mut right = sibling;
+        let (left, right) = if is_right_node == 1 {
+            (sibling, current_hash)
+        } else {
+            (current_hash, sibling)
+        };
         
-        // If index is 1, current node is on the right
-        if path_bit == 1 {
-            left = sibling;
-            right = current;
-        }
-        
-        // Hash the pair (using Pedersen hash for ZK efficiency)
-        current = std::hash::pedersen_hash([left, right]);
+        current_hash = hash_pair(left, right);
     }
     
-    // Critical Check: Calculated root MUST match the public registry
-    assert(current == kyc_registry_root);
+    assert(
+        current_hash == kyc_registry_root,
+        "KYC verification failed: not in registry"
+    );
 }
-
-// --- CIRCUIT 2: DARK POOL ORDER SOLVENCY ---
-// Proves: "I have enough funds for this order" + "Order is within market limits"
-// Privacy: Hides exact order size and exact user balance
-fn dark_pool_order_proof(
-    order_amount: Field,           // Private: How much you want to trade
-    order_price: Field,            // Private: Your limit price
-    user_balance: Field,           // Private: Your actual wallet balance
-    min_order_size: Field,         // Public: Protocol rule
-    max_order_size: Field,         // Public: Protocol rule
-    min_price: Field,              // Public: Market rule
-    max_price: Field               // Public: Market rule
+fn prove_dark_pool_order(
+    order_amount: Field,
+    order_price: Field,
+    user_balance: Field,
+    min_order_size: Field,
+    max_order_size: Field,
+    min_price: Field,
+    max_price: Field
 ) {
-    // 1. Range Checks (Prevent Underflow/Overflow Attacks)
-    // We cast to u64 to use standard comparison operators safely
-    assert(order_amount as u64 >= min_order_size as u64);
-    assert(order_amount as u64 <= max_order_size as u64);
-    
-    assert(order_price as u64 >= min_price as u64);
-    assert(order_price as u64 <= max_price as u64);
-    
-    // 2. Solvency Check (The most important line for a Dark Pool)
-    // Ensures you aren't spamming the MPC with fake money
-    assert(user_balance as u64 >= order_amount as u64);
+    validate_range(order_amount, min_order_size, max_order_size);
+    validate_range(order_price, min_price, max_price);
+    validate_solvency(user_balance, order_amount);
 }
-
-// --- CIRCUIT 3: LIQUIDATION AUCTION BID ---
-// Proves: "My hidden bid is higher than the minimum" + "I can pay for it"
-fn auction_bid_proof(
-    bid_amount: Field,             // Private: Your secret bid
-    bidder_balance: Field,         // Private: Your funds
-    minimum_bid: Field,            // Public: Current highest bid + increment
-    collateral_value: Field        // Public: Value of asset being sold
+fn prove_auction_bid(
+    bid_amount: Field,
+    bidder_balance: Field,
+    minimum_bid: Field,
+    collateral_value: Field
 ) {
-    // 1. Bid Validity
-    assert(bid_amount as u64 >= minimum_bid as u64);
+    assert(
+        bid_amount as u64 >= minimum_bid as u64,
+        "Bid below minimum required"
+    );
     
-    // 2. Solvency
-    assert(bidder_balance as u64 >= bid_amount as u64);
+    validate_solvency(bidder_balance, bid_amount);
     
-    // 3. Sanity Check (Bid shouldn't vastly exceed value unless strategic)
-    // This prevents fat-finger errors in blind auctions
-    assert(bid_amount as u64 <= collateral_value as u64);
+    assert(
+        bid_amount as u64 <= collateral_value as u64,
+        "Bid exceeds collateral value"
+    );
 }
 
 fn main(
-    // Selector: 1=Compliance, 2=Order, 3=Auction
     circuit_type: pub Field,
     
-    // Inputs for Compliance
+    // compliance inputs
     user_id_hash: Field,
     kyc_registry_root: pub Field,
     merkle_path: [Field; 8],
     merkle_indices: [Field; 8],
     
-    // Inputs for Dark Pool Order
+    // pool order inputs
     order_amount: Field,
     order_price: Field,
     user_balance: Field,
@@ -96,20 +96,35 @@ fn main(
     min_price: pub Field,
     max_price: pub Field,
     
-    // Inputs for Auction Bid
+    // auction bid inputs
     bid_amount: Field,
     bidder_balance: Field,
     minimum_bid: pub Field,
     collateral_value: pub Field
 ) {
-    if circuit_type == 1 {
-        compliance_proof(user_id_hash, kyc_registry_root, merkle_path, merkle_indices);
-    } else if circuit_type == 2 {
-        dark_pool_order_proof(
-            order_amount, order_price, user_balance,
-            min_order_size, max_order_size, min_price, max_price
+    if circuit_type == COMPLIANCE_CIRCUIT {
+        prove_compliance(
+            user_id_hash,
+            kyc_registry_root,
+            merkle_path,
+            merkle_indices
         );
-    } else if circuit_type == 3 {
-        auction_bid_proof(bid_amount, bidder_balance, minimum_bid, collateral_value);
+    } else if circuit_type == DARK_POOL_CIRCUIT {
+        prove_dark_pool_order(
+            order_amount,
+            order_price,
+            user_balance,
+            min_order_size,
+            max_order_size,
+            min_price,
+            max_price
+        );
+    } else if circuit_type == AUCTION_CIRCUIT {
+        prove_auction_bid(
+            bid_amount,
+            bidder_balance,
+            minimum_bid,
+            collateral_value
+        );
     }
 }
