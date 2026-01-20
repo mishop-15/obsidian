@@ -1,0 +1,175 @@
+@import "tailwindcss";
+
+@theme {
+  /* ANIMATIONS - Ultra-Slow & Elegant */
+  --animate-float: float 45s ease-in-out infinite;
+  --animate-twinkle: twinkle 12s ease-in-out infinite;
+  --animate-shimmer: shimmer 3s linear infinite;
+  --animate-glow: glow 2s ease-in-out infinite alternate;
+  --animate-scale-in: scale-in 0.5s ease-out;
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(40px, -30px) scale(1.08); }
+    66% { transform: translate(-30px, 30px) scale(0.95); }
+  }
+  
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.15); }
+  }
+  
+  @keyframes shimmer {
+    from { background-position: 0 0; }
+    to { background-position: -200% 0; }
+  }
+
+  @keyframes glow {
+    from { 
+      box-shadow: 0 0 15px -5px rgba(212, 175, 55, 0.3);
+    }
+    to { 
+      box-shadow: 0 0 30px -5px rgba(212, 175, 55, 0.6);
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+:root {
+  /* BACKGROUNDS - "The Void" */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #121212;
+  --bg-tertiary: #1a1a1a;
+
+  /* GOLD PALETTE - "Institutional Luxury" */
+  --gold-primary: #d4af37;
+  --gold-hover: #e8c547;
+  --gold-muted: #8b7620;
+  --copper: #b87333;
+
+  /* TEXT - Maximum Clarity */
+  --text-primary: #f5f5f5;
+  --text-secondary: #a0a0a0;
+  --text-tertiary: #707070;
+
+  /* BORDERS */
+  --border-subtle: rgba(212, 175, 55, 0.1);
+  --border-medium: rgba(212, 175, 55, 0.25);
+  --border-strong: rgba(212, 175, 55, 0.4);
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* LUXURY CARD - Solid, Heavy, Framed in Gold */
+.luxury-card {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+  border-radius: 2.5rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.luxury-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 
+              0 0 30px -10px rgba(212, 175, 55, 0.2);
+}
+
+/* INTERACTIVE CARD - Feature Cards with Extra Effects */
+.luxury-card-interactive {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+  border-radius: 2.5rem;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.luxury-card-interactive::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.luxury-card-interactive:hover::before {
+  opacity: 1;
+}
+
+.luxury-card-interactive:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 
+              0 0 40px -10px rgba(212, 175, 55, 0.3);
+}
+
+/* GOLD TEXT GRADIENT - Sparingly Used */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #d4af37 0%, #e8c547 50%, #d4af37 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+/* GOLD BORDER GLOW */
+.gold-glow {
+  animation: glow 3s ease-in-out infinite alternate;
+}
+
+/* UTILITY: Fade In Animation */
+.animate-fade-in {
+  animation: scale-in 0.6s ease-out;
+}
+
+/* SCROLLBAR STYLING */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold-muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-primary);
+}
+
+/* SELECTION STYLING */
+::selection {
+  background-color: rgba(212, 175, 55, 0.3);
+  color: var(--text-primary);
+}
+
+/* FOCUS STATES */
+*:focus-visible {
+  outline: 2px solid var(--gold-primary);
+  outline-offset: 2px;
+}

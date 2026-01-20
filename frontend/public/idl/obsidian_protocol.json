@@ -1,0 +1,1086 @@
+{
+  "address": "GbEuxhGpP1iy7YouyvfrDPEKk6pHZhZ8oT5oxLMvbGQ3",
+  "metadata": {
+    "name": "obsidian_protocol",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "batch_match_orders",
+      "discriminator": [
+        64,
+        59,
+        173,
+        161,
+        151,
+        210,
+        150,
+        5
+      ],
+      "accounts": [
+        {
+          "name": "order_book",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "batch_id",
+          "type": "u64"
+        },
+        {
+          "name": "settlement_price",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "borrow",
+      "discriminator": [
+        228,
+        253,
+        131,
+        202,
+        207,
+        116,
+        89,
+        18
+      ],
+      "accounts": [
+        {
+          "name": "pool",
+          "writable": true
+        },
+        {
+          "name": "user_loan",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  97,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "user_token_account",
+          "writable": true
+        },
+        {
+          "name": "pool_token_account",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "ltv_proof",
+          "type": "bytes"
+        }
+      ]
+    },
+    {
+      "name": "create_proof_account",
+      "discriminator": [
+        48,
+        181,
+        80,
+        70,
+        136,
+        30,
+        150,
+        231
+      ],
+      "accounts": [
+        {
+          "name": "proof_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  111,
+                  102
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              },
+              {
+                "kind": "arg",
+                "path": "order_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "order_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "deposit",
+      "discriminator": [
+        242,
+        35,
+        198,
+        137,
+        82,
+        225,
+        242,
+        182
+      ],
+      "accounts": [
+        {
+          "name": "pool",
+          "writable": true
+        },
+        {
+          "name": "user_loan",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  97,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "user_token_account",
+          "writable": true
+        },
+        {
+          "name": "pool_token_account",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "proof_data",
+          "type": "bytes"
+        }
+      ]
+    },
+    {
+      "name": "initialize_dark_pool",
+      "discriminator": [
+        251,
+        117,
+        214,
+        206,
+        252,
+        141,
+        148,
+        80
+      ],
+      "accounts": [
+        {
+          "name": "order_book",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  97,
+                  114,
+                  107,
+                  95,
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "bump",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "initialize_pool",
+      "discriminator": [
+        95,
+        180,
+        10,
+        172,
+        84,
+        174,
+        232,
+        40
+      ],
+      "accounts": [
+        {
+          "name": "pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "bump",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "liquidate",
+      "discriminator": [
+        223,
+        179,
+        226,
+        125,
+        48,
+        46,
+        39,
+        74
+      ],
+      "accounts": [
+        {
+          "name": "pool",
+          "writable": true
+        },
+        {
+          "name": "user_loan",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  97,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_loan.owner",
+                "account": "UserLoan"
+              }
+            ]
+          }
+        },
+        {
+          "name": "liquidator",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "liquidator_token_account",
+          "writable": true
+        },
+        {
+          "name": "pool_token_account",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "liquidation_proof",
+          "type": "bytes"
+        }
+      ]
+    },
+    {
+      "name": "settle_auction",
+      "discriminator": [
+        246,
+        196,
+        183,
+        98,
+        222,
+        139,
+        46,
+        133
+      ],
+      "accounts": [
+        {
+          "name": "auction",
+          "writable": true
+        },
+        {
+          "name": "pool",
+          "writable": true
+        },
+        {
+          "name": "winner",
+          "signer": true
+        },
+        {
+          "name": "winner_token_account",
+          "writable": true
+        },
+        {
+          "name": "pool_token_account",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "winning_bid_amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "start_liquidation_auction",
+      "discriminator": [
+        32,
+        210,
+        115,
+        53,
+        58,
+        3,
+        225,
+        120
+      ],
+      "accounts": [
+        {
+          "name": "auction",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  117,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "auction_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_loan"
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "auction_id",
+          "type": "u64"
+        },
+        {
+          "name": "collateral_amount",
+          "type": "u64"
+        },
+        {
+          "name": "minimum_bid",
+          "type": "u64"
+        },
+        {
+          "name": "duration",
+          "type": "u64"
+        },
+        {
+          "name": "bump",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "store_order_proof",
+      "discriminator": [
+        220,
+        171,
+        65,
+        244,
+        47,
+        102,
+        136,
+        17
+      ],
+      "accounts": [
+        {
+          "name": "proof_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  111,
+                  102
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              },
+              {
+                "kind": "account",
+                "path": "proof_account.order_id",
+                "account": "ProofAccount"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "chunk",
+          "type": "bytes"
+        },
+        {
+          "name": "is_order_proof",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "submit_encrypted_bid",
+      "discriminator": [
+        79,
+        24,
+        114,
+        130,
+        197,
+        38,
+        79,
+        99
+      ],
+      "accounts": [
+        {
+          "name": "auction"
+        },
+        {
+          "name": "bid",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  105,
+                  100
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "auction_id"
+              },
+              {
+                "kind": "account",
+                "path": "bidder"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bidder",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "auction_id",
+          "type": "u64"
+        },
+        {
+          "name": "encrypted_bid",
+          "type": "bytes"
+        },
+        {
+          "name": "bid_proof",
+          "type": "bytes"
+        }
+      ]
+    },
+    {
+      "name": "submit_encrypted_order",
+      "discriminator": [
+        61,
+        244,
+        189,
+        182,
+        36,
+        51,
+        117,
+        241
+      ],
+      "accounts": [
+        {
+          "name": "order_book",
+          "writable": true
+        },
+        {
+          "name": "order",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  111,
+                  114,
+                  100,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              },
+              {
+                "kind": "arg",
+                "path": "order_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "proof_account",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  111,
+                  102
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              },
+              {
+                "kind": "arg",
+                "path": "order_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "order_id",
+          "type": "u64"
+        },
+        {
+          "name": "encrypted_data",
+          "type": "bytes"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "DarkPoolOrderBook",
+      "discriminator": [
+        104,
+        48,
+        193,
+        244,
+        236,
+        212,
+        156,
+        246
+      ]
+    },
+    {
+      "name": "EncryptedBid",
+      "discriminator": [
+        93,
+        87,
+        155,
+        118,
+        109,
+        251,
+        231,
+        224
+      ]
+    },
+    {
+      "name": "EncryptedOrder",
+      "discriminator": [
+        82,
+        52,
+        93,
+        72,
+        209,
+        212,
+        50,
+        250
+      ]
+    },
+    {
+      "name": "LiquidationAuction",
+      "discriminator": [
+        114,
+        80,
+        77,
+        48,
+        79,
+        174,
+        24,
+        141
+      ]
+    },
+    {
+      "name": "Pool",
+      "discriminator": [
+        241,
+        154,
+        109,
+        4,
+        17,
+        177,
+        109,
+        188
+      ]
+    },
+    {
+      "name": "ProofAccount",
+      "discriminator": [
+        54,
+        244,
+        192,
+        233,
+        218,
+        58,
+        44,
+        242
+      ]
+    },
+    {
+      "name": "UserLoan",
+      "discriminator": [
+        41,
+        122,
+        75,
+        132,
+        139,
+        31,
+        113,
+        15
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidAmount",
+      "msg": "Amount must be greater than zero"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidProof",
+      "msg": "Proof data cannot be empty"
+    },
+    {
+      "code": 6002,
+      "name": "PositionLiquidated",
+      "msg": "This position has already been liquidated"
+    },
+    {
+      "code": 6003,
+      "name": "Unauthorized",
+      "msg": "Unauthorized access to this resource"
+    },
+    {
+      "code": 6004,
+      "name": "AuctionSettled",
+      "msg": "This auction has already been settled"
+    },
+    {
+      "code": 6005,
+      "name": "AuctionExpired",
+      "msg": "Auction bidding period has expired"
+    },
+    {
+      "code": 6006,
+      "name": "AuctionNotExpired",
+      "msg": "Cannot settle auction before expiration time"
+    }
+  ],
+  "types": [
+    {
+      "name": "DarkPoolOrderBook",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "total_orders",
+            "type": "u64"
+          },
+          {
+            "name": "next_batch_id",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EncryptedBid",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bidder",
+            "type": "pubkey"
+          },
+          {
+            "name": "auction_id",
+            "type": "u64"
+          },
+          {
+            "name": "encrypted_bid",
+            "type": "bytes"
+          },
+          {
+            "name": "bid_proof",
+            "type": "bytes"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EncryptedOrder",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "order_id",
+            "type": "u64"
+          },
+          {
+            "name": "encrypted_data",
+            "type": "bytes"
+          },
+          {
+            "name": "proof_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "settled",
+            "type": "bool"
+          },
+          {
+            "name": "batch_id",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LiquidationAuction",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "position_owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "auction_id",
+            "type": "u64"
+          },
+          {
+            "name": "collateral_amount",
+            "type": "u64"
+          },
+          {
+            "name": "minimum_bid",
+            "type": "u64"
+          },
+          {
+            "name": "start_time",
+            "type": "i64"
+          },
+          {
+            "name": "duration",
+            "type": "u64"
+          },
+          {
+            "name": "settled",
+            "type": "bool"
+          },
+          {
+            "name": "winning_bidder",
+            "type": "pubkey"
+          },
+          {
+            "name": "winning_bid",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Pool",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "total_deposits",
+            "type": "u64"
+          },
+          {
+            "name": "total_borrowed",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProofAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "order_id",
+            "type": "u64"
+          },
+          {
+            "name": "order_proof",
+            "type": "bytes"
+          },
+          {
+            "name": "compliance_proof",
+            "type": "bytes"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserLoan",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "collateral_amount",
+            "type": "u64"
+          },
+          {
+            "name": "collateral_encrypted",
+            "type": "bytes"
+          },
+          {
+            "name": "borrowed",
+            "type": "u64"
+          },
+          {
+            "name": "ltv_proof",
+            "type": "bytes"
+          },
+          {
+            "name": "liquidation_proof",
+            "type": "bytes"
+          },
+          {
+            "name": "liquidated",
+            "type": "bool"
+          },
+          {
+            "name": "deposit_timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    }
+  ]
+}
