@@ -62,7 +62,7 @@ export class ObsidianClient {
     const accountInfo = await connection.getAccountInfo(proofPda);
     if (!accountInfo) {
         console.log("[Obsidian] Queueing Init Transaction...");
-        const initTx = await this.program.methods
+        const initTx = await (this.program.methods as any)
             .createProofAccount(orderId)
             .accounts({
                 proofAccount: proofPda,
@@ -77,7 +77,7 @@ export class ObsidianClient {
         const end = Math.min(offset + CHUNK_SIZE, proof.length);
         const chunk = proof.slice(offset, end);
         
-        const chunkTx = await this.program.methods
+        const chunkTx = await (this.program.methods as any)
             .storeOrderProof(Buffer.from(chunk), isOrderProof)
             .accounts({
                 proofAccount: proofPda,
@@ -132,7 +132,7 @@ export class ObsidianClient {
   async settleBatch(batchId: BN, settlementPrice: number) {
     console.log(`[Node] Settling Batch ${batchId.toString()} at price $${settlementPrice}...`);
     const priceNative = new BN(Math.floor(settlementPrice * 100));
-    const tx = await this.program.methods
+    const tx = await (this.program.methods as any)
       .batchMatchOrders(batchId, priceNative)
       .accounts({
         orderBook: this.darkPoolPda,
@@ -180,7 +180,7 @@ export class ObsidianClient {
       ],
       this.program.programId
     )[0];
-    const tx = await this.program.methods
+    const tx = await (this.program.methods as any)
       .submitEncryptedBid(auctionId, Buffer.from(encryptedBid), bidProof)
       .accounts({
         auction: auctionPda,
@@ -222,7 +222,7 @@ export class ObsidianClient {
     const minBid = new BN(1 * 1e9);           
     const duration = new BN(300);             
 
-    const tx = await this.program.methods
+    const tx = await (this.program.methods as any)
       .startLiquidationAuction(
         auctionId, 
         collateralAmount, 

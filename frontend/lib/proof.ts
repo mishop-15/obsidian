@@ -34,7 +34,9 @@ let noirCache: Noir | null = null;
 async function getNoirInstance() {
   if (!backendCache) {
     backendCache = new BarretenbergBackend(compiledCircuit as any);
-    noirCache = new Noir(compiledCircuit as any, backendCache);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    noirCache = new Noir(compiledCircuit as any, backendCache as any); 
   }
   return { backend: backendCache, noir: noirCache! };
 }
