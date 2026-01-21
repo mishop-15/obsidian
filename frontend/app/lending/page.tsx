@@ -54,7 +54,7 @@ export default function LendingPage() {
         }
 
         // C. User's Personal Deposit Position (LocalStorage Mock)
-        const savedDeposit = localStorage.getItem(`obsidian_deposit_${wallet.publicKey.toString()}`);
+        const savedDeposit = localStorage.getItem(`obsidian_deposit_${wallet.publicKey!.toString()}`);
         if (savedDeposit) {
             setUserDeposit(parseFloat(savedDeposit));
         } else {
@@ -71,7 +71,6 @@ export default function LendingPage() {
     return () => clearInterval(interval);
   }, [wallet.publicKey, connection]);
 
-  // --- 2. DEPOSIT LOGIC (DIRECT SOL TRANSFER) ---
   const handleDeposit = async () => {
     if (!wallet.publicKey || !depositAmount) return;
     setIsLoading(true);
@@ -81,10 +80,6 @@ export default function LendingPage() {
       const program = getProgram(connection, wallet as any);
       const client = new ObsidianClient(program, wallet.publicKey);
       const amountLamports = new BN(Number(depositAmount) * 1e9);
-
-      // --- FIX: USE DIRECT TRANSFER ---
-      // Your IDL 'deposit' requires SPL tokens and Proofs. 
-      // For LP Liquidity, we simply transfer SOL to the Pool Vault.
       
       const tx = new Transaction().add(
         SystemProgram.transfer({
