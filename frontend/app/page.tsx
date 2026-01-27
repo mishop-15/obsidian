@@ -73,13 +73,13 @@ export default function HomePage() {
           The Invisible
           <br />
           <span className="text-gold-gradient">
-            Order Book
+            Dark Pool
           </span>
         </h1>
         
         <p className="text-xl text-[#a0a0a0] max-w-2xl mx-auto mb-10 leading-relaxed font-light">
           Institutional-grade privacy for Solana. Prevent front-running and MEV 
-          with client-side Zero Knowledge proofs.
+          with client-side Zero Knowledge proofs. Verify encrypted orders directly on the blockchain.
         </p>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
